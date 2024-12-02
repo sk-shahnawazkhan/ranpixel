@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./App.css";
+import RandomImage from "./components/RandomImage/RandomImage";
 
 function App() {
   return (
     <>
-      <h1>Get random image from unsplash.com</h1>
+      <RandomImage />
     </>
   );
 }
