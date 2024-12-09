@@ -1,5 +1,4 @@
 header {
-  min-height: 70px;
   display: flex;
   align-items: center;
   color: #ffffff;
@@ -11,7 +10,17 @@ header h1 {
   margin: 0;
 }
 @media screen and (max-width: 767px) {
+  header {
+    height: 50px;
+    max-height: 50px;
+    padding: 10px 25px;
+  }
   header h1 {
     font-size: 24px;
+  }
+}
+@media screen and (min-width: 768px) {
+  header {
+    min-height: 70px;
   }
 }
