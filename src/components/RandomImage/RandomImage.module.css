@@ -86,9 +86,6 @@ textarea {
     width: 100%;
     padding-top: 0;
   }
-  .button {
-    height: 32px;
-  }
 }
 
 @media screen and (max-width: 430px) {
