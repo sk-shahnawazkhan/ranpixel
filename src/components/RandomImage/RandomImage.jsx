@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Header/Header";
 import styles from "./RandomImage.module.css";
 
 const RandomImage = () => {
   const [image, setImage] = React.useState({
-    caption: "Image caption",
-    title: "Title",
-    showImage: "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d",
+    title: "Image title",
+    caption: "Give a caption for the image",
+    url: "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d",
+    isButtonDisabled: true,
   });
 
+  const [count, setCount] = useState(0);
   const [allImages, setAllImages] = React.useState([]);
 
   const apiKey = import.meta.env.VITE_RANDOMIMAGE_KEY;
@@ -24,19 +26,26 @@ const RandomImage = () => {
     getImages();
   }, []);
 
-  function getNewImage() {
-    const randomNumber = Math.floor(Math.random() * allImages.length);
-    let imgUrl = allImages[randomNumber].urls.raw;
+  function handleCaptionButton() {
     setImage((prevState) => ({
       ...prevState,
-      showImage: imgUrl,
+      caption: imageCaption.value,
+    }));
+    setCount((pevCount) => pevCount + 1);
+  }
+
+  function handleNewImageButton() {
+    const randomNumber = Math.floor(Math.random() * allImages.length);
+    let imgUrl = allImages[randomNumber].urls.small;
+    setImage((prevState) => ({
+      ...prevState,
+      url: imgUrl,
     }));
   }
 
-  // function downloadImage() {}
-
-  const downloadImage = async () => {
-    const originalImage = image.showImage.split("?")[0];
+  // function handleDownloadButton() {}
+  const handleDownloadButton = async () => {
+    const originalImage = image.url.split("?")[0];
     const imageLink = await fetch(originalImage);
     console.log(imageLink);
 
@@ -53,18 +62,19 @@ const RandomImage = () => {
     document.body.removeChild(link);
   };
 
-  function handleAddCaption() {
+  function handleInputChange(event) {
+    const imageTitle = event.target.value;
     setImage((prevState) => ({
       ...prevState,
-      caption: txtAreaCaption.value,
+      title: imageTitle.length === 0 ? "Image title" : imageTitle,
     }));
-    // txtAreaCaption.value = "";
   }
 
-  function handleChange(event) {
+  function handleCaptionChange(event) {
+    const captionValue = event.target.value;
     setImage((prevState) => ({
       ...prevState,
-      title: event.target.value,
+      isButtonDisabled: captionValue.length === 0,
     }));
   }
 
@@ -74,12 +84,7 @@ const RandomImage = () => {
       <div className={styles.container}>
         <div className={styles.leftContainer}>
           <figure>
-            <img
-              src={image.showImage}
-              alt="Image"
-              width={"100%"}
-              height={"500px"}
-            />
+            <img src={image.url} alt="Image" className={styles.image} />
             <figcaption>
               <h4>{image.title}</h4>
               {image.caption}
@@ -90,29 +95,39 @@ const RandomImage = () => {
           <div className={styles.w100}>
             <input
               type="text"
-              name="txtImageTitle"
-              id="txtImageTitle"
-              className={styles.txtImageTitle}
-              placeholder="Add Image Title..."
-              onChange={handleChange}
+              name="imageTitle"
+              id="imageTitle"
+              className={styles.imageTitle}
+              placeholder="Type image title..."
+              onChange={handleInputChange}
             />
-            <textarea name="txtAreaCaption" id="txtAreaCaption"></textarea>
+            <textarea
+              name="imageCaption"
+              id="imageCaption"
+              placeholder="Write a image caption..."
+              onChange={handleCaptionChange}
+            ></textarea>
             <button
-              className={`${styles.button} ${styles.btnCaption}`}
-              onClick={handleAddCaption}
+              className={
+                image.isButtonDisabled
+                  ? `${styles.button} ${styles.btnCaption} ${styles.btnDisabled}`
+                  : `${styles.button} ${styles.btnCaption}`
+              }
+              disabled={image.isButtonDisabled}
+              onClick={handleCaptionButton}
             >
-              Add Image Caption
+              {count === 0 ? "Add Image Caption" : "Update Image Caption"}
             </button>
           </div>
           <button
-            className={`${styles.button} ${styles.btnImage}`}
-            onClick={getNewImage}
+            className={`${styles.button} ${styles.btnNewImage}`}
+            onClick={handleNewImageButton}
           >
             Get New Image
           </button>
           <button
             className={`${styles.button} ${styles.btnDownload}`}
-            onClick={downloadImage}
+            onClick={handleDownloadButton}
           >
             Download Image
           </button>
