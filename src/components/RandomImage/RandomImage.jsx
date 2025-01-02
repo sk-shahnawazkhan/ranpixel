@@ -7,9 +7,9 @@ const RandomImage = () => {
     title: "Image title",
     caption: "Give a caption for the image",
     url: "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d",
-    isButtonDisabled: true,
+    alt: "",
   });
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [count, setCount] = useState(0);
   const [allImages, setAllImages] = React.useState([]);
 
@@ -37,9 +37,11 @@ const RandomImage = () => {
   function handleNewImageButton() {
     const randomNumber = Math.floor(Math.random() * allImages.length);
     let imgUrl = allImages[randomNumber].urls.small;
+    let imgAlt = allImages[randomNumber].alt_description;
     setImage((prevState) => ({
       ...prevState,
       url: imgUrl,
+      alt: imgAlt,
     }));
   }
 
@@ -72,10 +74,7 @@ const RandomImage = () => {
 
   function handleCaptionChange(event) {
     const captionValue = event.target.value;
-    setImage((prevState) => ({
-      ...prevState,
-      isButtonDisabled: captionValue.length === 0,
-    }));
+    setIsButtonDisabled(captionValue.length === 0);
   }
 
   return (
@@ -84,7 +83,7 @@ const RandomImage = () => {
       <div className={styles.container}>
         <div className={styles.leftContainer}>
           <figure>
-            <img src={image.url} alt="Image" className={styles.image} />
+            <img src={image.url} alt={image.alt} className={styles.image} />
             <figcaption>
               <h4>{image.title}</h4>
               {image.caption}
@@ -109,11 +108,11 @@ const RandomImage = () => {
             ></textarea>
             <button
               className={
-                image.isButtonDisabled
+                isButtonDisabled
                   ? `${styles.button} ${styles.btnCaption} ${styles.btnDisabled}`
                   : `${styles.button} ${styles.btnCaption}`
               }
-              disabled={image.isButtonDisabled}
+              disabled={isButtonDisabled}
               onClick={handleCaptionButton}
             >
               {count === 0 ? "Add Image Caption" : "Update Image Caption"}
