@@ -13,13 +13,14 @@ const RandomImage = () => {
   const [count, setCount] = useState(0);
   const [allImages, setAllImages] = React.useState([]);
 
-  const apiKey = import.meta.env.VITE_RANDOMIMAGE_KEY;
+  // const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY;
 
   React.useEffect(() => {
     async function getImages() {
-      const res = await fetch(
-        `https://api.unsplash.com/photos?client_id=${apiKey}`
-      );
+      // const res = await fetch(
+      //   `https://api.unsplash.com/photos?client_id=${ACCESS_KEY}`
+      // );
+      const res = await fetch("/api/apiHandler");
       const data = await res.json();
       setAllImages(data);
     }
