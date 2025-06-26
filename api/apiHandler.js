@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `https://api.unsplash.com/photos?client_id=${ACCESS_KEY}`
+      `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}&count=30`
     );
     const data = await response.json();
 

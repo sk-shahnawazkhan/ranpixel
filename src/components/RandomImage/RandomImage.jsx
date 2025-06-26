@@ -1,24 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../Header/Header";
 import styles from "./RandomImage.module.css";
 
 const RandomImage = () => {
-  const [image, setImage] = React.useState({
+  const [image, setImage] = useState({
     title: "Image title",
     caption: "Give a caption for the image",
     url: "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d",
-    alt: "",
+    alt: "default image",
   });
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [count, setCount] = useState(0);
-  const [allImages, setAllImages] = React.useState([]);
+  const [allImages, setAllImages] = useState([]);
 
   // const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY;
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getImages() {
       // const res = await fetch(
-      //   `https://api.unsplash.com/photos?client_id=${ACCESS_KEY}`
+      //   `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}&count=30`
       // );
       const res = await fetch("/api/apiHandler");
       const data = await res.json();
@@ -26,14 +24,6 @@ const RandomImage = () => {
     }
     getImages();
   }, []);
-
-  function handleCaptionButton() {
-    setImage((prevState) => ({
-      ...prevState,
-      caption: imageCaption.value,
-    }));
-    setCount((pevCount) => pevCount + 1);
-  }
 
   function handleNewImageButton() {
     const randomNumber = Math.floor(Math.random() * allImages.length);
@@ -50,7 +40,6 @@ const RandomImage = () => {
   const handleDownloadButton = async () => {
     const originalImage = image.url.split("?")[0];
     const imageLink = await fetch(originalImage);
-    console.log(imageLink);
 
     // Split image name
     const fileName = originalImage.split("/").pop();
@@ -65,19 +54,6 @@ const RandomImage = () => {
     document.body.removeChild(link);
   };
 
-  function handleInputChange(event) {
-    const imageTitle = event.target.value;
-    setImage((prevState) => ({
-      ...prevState,
-      title: imageTitle.length === 0 ? "Image title" : imageTitle,
-    }));
-  }
-
-  function handleCaptionChange(event) {
-    const captionValue = event.target.value;
-    setIsButtonDisabled(captionValue.length === 0);
-  }
-
   return (
     <>
       <Header />
@@ -85,40 +61,13 @@ const RandomImage = () => {
         <div className={styles.leftContainer}>
           <figure>
             <img src={image.url} alt={image.alt} className={styles.image} />
-            <figcaption>
+            {/* <figcaption>
               <h4>{image.title}</h4>
               {image.caption}
-            </figcaption>
+            </figcaption> */}
           </figure>
         </div>
         <div className={styles.rightContainer}>
-          <div className={styles.w100}>
-            <input
-              type="text"
-              name="imageTitle"
-              id="imageTitle"
-              className={styles.imageTitle}
-              placeholder="Type image title..."
-              onChange={handleInputChange}
-            />
-            <textarea
-              name="imageCaption"
-              id="imageCaption"
-              placeholder="Write a image caption..."
-              onChange={handleCaptionChange}
-            ></textarea>
-            <button
-              className={
-                isButtonDisabled
-                  ? `${styles.button} ${styles.btnCaption} ${styles.btnDisabled}`
-                  : `${styles.button} ${styles.btnCaption}`
-              }
-              disabled={isButtonDisabled}
-              onClick={handleCaptionButton}
-            >
-              {count === 0 ? "Add Image Caption" : "Update Image Caption"}
-            </button>
-          </div>
           <button
             className={`${styles.button} ${styles.btnNewImage}`}
             onClick={handleNewImageButton}
