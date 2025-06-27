@@ -33,7 +33,7 @@
 ## 🧠 Implementation Details
 
 - On **page load**, RanPixel fetches 30 random images using:
-  > https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}&count=30000
+  > https://api.unsplash.com/photos/random?client_id=${YOUR_UNSPLASH_ACCESS_KEY}&count=30000
 - The images are stored in local state.
 - Each time the **"Get New Image"** button is clicked, a new image is selected using JavaScript's `Math.random()` from the pre-fetched list.
 - This reduces API calls and improves performance, while still maintaining randomness.
@@ -58,8 +58,8 @@ cd ranpixel
 
 ### 3. Add Your Unsplash Access Key
 
-Create a .env/.env.local file in the root directory and add your Unsplash Access Key. Don't forget to add it to .gitignore file.  
-VITE_ACCESS_KEY=your_access_key(Local/Development environment)  
+Create a .env.local file in the root directory and add your Unsplash Access Key. Don't forget to add it to .gitignore file.  
+VITE_ACCESS_KEY=your_access_key(Add it to .env.local for Local/Development environment)  
 ACCESS_KEY=your_access_key(Add it to Vercel/Netlify environment variables)
 
 ### 4. Start the development server
