@@ -33,7 +33,7 @@
 ## 🧠 Implementation Details
 
 - On **page load**, RanPixel fetches 30 random images using:
-  > https://api.unsplash.com/photos/random?client_id=${YOUR_UNSPLASH_ACCESS_KEY}&count=30000
+  > https://api.unsplash.com/photos/random?client_id=${YOUR_UNSPLASH_ACCESS_KEY}&count=30
 - The images are stored in local state.
 - Each time the **"Get New Image"** button is clicked, a new image is selected using JavaScript's `Math.random()` from the pre-fetched list.
 - This reduces API calls and improves performance, while still maintaining randomness.

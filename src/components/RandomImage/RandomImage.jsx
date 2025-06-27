@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Header/Header";
 import styles from "./RandomImage.module.css";
+import defaultImage from "../../assets/images/default.jpg";
 
 const RandomImage = () => {
   const [image, setImage] = useState({
-    title: "Image title",
-    caption: "Give a caption for the image",
-    url: "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d",
+    url: defaultImage,
     alt: "default image",
   });
   const [allImages, setAllImages] = useState([]);
